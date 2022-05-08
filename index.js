@@ -34,6 +34,23 @@ async function run() {
             const product = await productCollection.findOne(query)
             res.send(product)
         })
+        // PUT
+        app.put('/product/:id',async(req,res)=>{
+            const updateQuantity = req.body.newQuantity
+            const id = req.params.id
+            const query = {_id: ObjectId(id)}
+            const product = await productCollection.findOne(query)
+            const option={upsert:true}
+            const updateDoc ={
+                $set:{
+                    ...product,
+                    quantity:updateQuantity
+
+                }
+            }
+            const result = await productCollection.updateOne(query,updateDoc,option)
+            res.send(result)
+        })
     }
     finally {
 
