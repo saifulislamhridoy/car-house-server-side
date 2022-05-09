@@ -51,6 +51,23 @@ async function run() {
             const result = await productCollection.updateOne(query,updateDoc,option)
             res.send(result)
         })
+// Restock Quantity
+        app.put('/pd/:id',async(req,res)=>{
+            const updateStockQuantity = req.body.stockQuantity
+            const id = req.params.id
+            const query = {_id: ObjectId(id)}
+            const product = await productCollection.findOne(query)
+            const option={upsert:true}
+            const updateDoc ={
+                $set:{
+                    ...product,
+                    quantity:updateStockQuantity
+
+                }
+            }
+            const result = await productCollection.updateOne(query,updateDoc,option)
+            res.send(result)
+        })
     }
     finally {
 
@@ -59,7 +76,7 @@ async function run() {
 run().catch(console.dir)
 
 app.get('/', (req, res) => {
-    res.send('Running car house server hhhhhhhhhudf')
+    res.send('Running car house server')
 })
 app.listen(port, () => {
     console.log('Listening to port', port)
