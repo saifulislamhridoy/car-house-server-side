@@ -75,6 +75,14 @@ async function run() {
             const result = await productCollection.deleteOne(query)
             res.send(result)
         })
+        // GET MY ITEMS
+        app.get('/myitems',async(req,res)=>{
+            const email= req.query.email
+            const query = {email:email}
+            const cursor = productCollection.find(query)
+            const myitems = await cursor.toArray()
+            res.send(myitems)
+        })
     }
     finally {
 
